@@ -5,11 +5,11 @@ MATLAB scripts for predictive principal component analysis (PredPCA)
 
 They are supplementary materials of
 
-Dimensionality reduction to maximize prediction generalization capability
+"Dimensionality reduction to maximize prediction generalization capability"
 
 Takuya Isomura, Taro Toyoizumi
 
-Preprint: https://arxiv.org/abs/2003.00470
+Preprint at https://arxiv.org/abs/2003.00470
 
 <br>
 
