@@ -3,7 +3,7 @@ MATLAB scripts for predictive principal component analysis (PredPCA)
 
 <br>
 
-They are supplementary materials of
+This is a supplementary material of
 
 "Dimensionality reduction to maximize prediction generalization capability"
 
