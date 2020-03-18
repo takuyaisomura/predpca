@@ -1,7 +1,7 @@
 
 %--------------------------------------------------------------------------------
 
-% predpca_aloi.m
+% predpca_aloi_main.m
 %
 % This demo is included in
 % Dimensionality reduction to maximize prediction generalization capability
