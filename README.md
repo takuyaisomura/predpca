@@ -71,6 +71,13 @@ Each script should take less than 5 minutes. Examples of their outcomes are stor
 ### fig3
 Download all scripts under the 'fig3' directory and put them in the same directory.
 
+Before run this script, please download ALOI dataset from http://aloi.science.uva.nl (full color (24 bit), quarter resolution (192 x 144), viewing direction) and expand aloi_red4_view.tar in the same directory.
+
+Reference: Geusebroek JM, Burghouts GJ, Smeulders AWM, The Amsterdam library of object images, Int J Comput Vision, 61, 103-112 (2005)
+
+Run 'predpca_aloi_preprocess.m' and put the output file aloi_data.mat in the same directory.
+
+Run 'predpca_aloi_main.m' to perform PredPCA and optain the outcomes.
 
 ### fig4
 Download all scripts under the 'fig4' directory and put them in the same directory.
@@ -83,7 +90,7 @@ Before run this script, please download BDD100K dataset from https://bdd-data.be
 
 'predpca_bdd100k_test.m' predicts 0.5 second future of test data.
 
-Preprocessing would take about 10 hours.
+Preprocessing would take 10+ hours.
 
 
 ## License
