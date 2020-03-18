@@ -31,7 +31,7 @@ This package requires only a standard computer with enough RAM to support the in
 
 Software: MATLAB
 
-RAM: 16+ GB for Figs 2,3 / 128+ GB for Fig 4
+RAM: 16+ GB for fig2 and fig3 / 128+ GB for fig4
 
 <br>
 
