@@ -1,4 +1,4 @@
-# predpca
+# Predictive principal component analysis (PredPCA)
 MATLAB scripts for predictive principal component analysis (PredPCA)
 
 <br>
