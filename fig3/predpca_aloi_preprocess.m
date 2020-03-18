@@ -19,6 +19,11 @@
 % http://aloi.science.uva.nl
 % (full color (24 bit), quarter resolution (192 x 144), viewing direction)
 % and expand aloi_red4_view.tar in the same directory
+%
+% Reference for ALOI dataset
+% Geusebroek JM, Burghouts GJ, Smeulders AWM, The Amsterdam library of object images,
+% Int J Comput Vision, 61, 103-112 (2005)
+%
 
 %--------------------------------------------------------------------------------
 % initialization
