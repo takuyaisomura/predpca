@@ -45,6 +45,7 @@
 %--------------------------------------------------------------------------------
 
 function fig2b(sequence_type,seed)
+% sequence_type=1 for ascending, sequence_type=2 for Fibonacci
 
 rng(1000000+seed);
 dir           = '';
