@@ -17,7 +17,7 @@
 %
 % Before run this script, please download BDD100K dataset from
 % https://bdd-data.berkeley.edu
-% downsample videos to 160*80 and put them in the same directory
+% downsample videos to 320*180 and put them in the same directory
 
 %--------------------------------------------------------------------------------
 % initialization
