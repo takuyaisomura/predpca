@@ -48,7 +48,7 @@ MATLAB R2019b
 The runtimes below are generated using this setup.
 
 
-## Demos
+## Demo
 ### fig2
 Download all scripts under the 'fig2' directory and put them in the same directory.
 
