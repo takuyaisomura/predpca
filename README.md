@@ -49,7 +49,7 @@ The runtimes below are generated using this setup.
 
 
 ## Demos
-### For Fig 2
+### fig2
 Before run this script, please download MNIST dataset from http://yann.lecun.com/exdb/mnist/ and expand
 
 train-images-idx3-ubyte
@@ -66,11 +66,11 @@ Download all scripts under the 'fig2' directory and put them in the same directo
 
 Run 'fig2a.m', 'fig2b.m', and 'fig2c.m'.
 
-Each script should take less than 5 minutes.
+Each script should take less than 5 minutes. Examples of their outcomes are stored in fig2/output.
 
-### For Fig 3
+### fig3
 
-### For Fig 4
+### fig4
 
 
 ## License
