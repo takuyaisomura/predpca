@@ -13,41 +13,27 @@
 % Copyright (C) 2020 Takuya Isomura
 % (RIKEN Center for Brain Science)
 %
-% 2020-3-5
+% 2020-3-18
 %
 % Before run this script, please download ALOI dataset from
 % http://aloi.science.uva.nl
+% (full color (24 bit), quarter resolution (192 x 144), viewing direction)
+% and expand aloi_red4_view.tar in the same directory
+%
+% Reference for ALOI dataset
+% Geusebroek JM, Burghouts GJ, Smeulders AWM, The Amsterdam library of object images,
+% Int J Comput Vision, 61, 103-112 (2005)
+%
+% Run predpca_aloi_preprocess.m
+% and put the output file aloi_data.mat in the same directory
+%
 
 %--------------------------------------------------------------------------------
 % initialization
 
 clear
-Timg    = 72000;
-Norig   = 36 * 36 * 3;
-Npca1   = 1000;
-Npca2   = 1000;
-Npca3   = 1000;
-
-%--------------------------------------------------------------------------------
-
 tic
-fprintf(1,'----------------------------------------\n');
-fprintf(1,'PredPCA of 3D rotating object images\n');
-fprintf(1,'----------------------------------------\n\n');
-fprintf(1,'preprocessing\n');
-
-dir     = '';
-
-% read files
-load([dir,'data_m1.mat'])
-load([dir,'data_C1.mat'])
-load([dir,'data_L1.mat'])
-load([dir,'data_C2.mat'])
-load([dir,'data_L2.mat'])
-load([dir,'data_C3.mat'])
-load([dir,'data_L3.mat'])
-load([dir,'data_3.mat'])
-
+Timg      = 72000;
 T         = 57600;    % number of training data
 T2        = 14400;    % number of test data
 Ns        = 300;      % number of input dimensions
@@ -57,10 +43,20 @@ Kf        = 5;        % order of predicting points
 Kp        = 19;       % order of reference points
 Kp2       = 37;       % order of reference points
 WithNoise = 0;        % presence of noise
+dir       = '';
+
+fprintf(1,'----------------------------------------\n');
+fprintf(1,'PredPCA of 3D rotating object images\n');
+fprintf(1,'----------------------------------------\n\n');
+
+fprintf(1,'read aloi_data.mat\n');
+load('aloi_data.mat') % read file
+data = cast(data(1:Ns,:),'double');
 
 %--------------------------------------------------------------------------------
 % create random object sequences for training and test
 
+fprintf(1,'preprocessing\n');
 seed  = 0;
 rng(1000000+seed);
 
@@ -84,29 +80,30 @@ for i = 1:((T+T2)/72)
 end
 
 %--------------------------------------------------------------------------------
+% create input data
 
-% create target fpr test (target for test is noise free)
+% create target for test (target for test is noise free)
 st2 = cell(Kf,1);
-for i = 1:Kf, st2{i,1} = data_3(timet{i,1}(T+1:T+T2),1:Ns)'; end % test target
+for i = 1:Kf, st2{i,1} = data(:,timet{i,1}(T+1:T+T2)); end % test target
 
 % target for training and inputs for training and test may contain noise
 if (WithNoise)
  sigma_noise    = 2.2832; % same amplitude as original input covariance
  fprintf(1,'sigma_noise = %f\n', sigma_noise);
- data_3_var     = mean(var(data_3(:,1:Ns)));
- fprintf(1,'averaged input variance (original)   = %f\n', data_3_var);
- data_3(:,1:Ns) = data_3(:,1:Ns) + randn(T+T2,Ns) * sigma_noise;
- data_3_var2    = mean(var(data_3(:,1:Ns)));
- fprintf(1,'averaged input variance (with noise) = %f\n', data_3_var2);
+ data_var     = mean(var(data'));
+ fprintf(1,'averaged input variance (original)   = %f\n', data_var);
+ data         = data + randn(Ns,T+T2) * sigma_noise;
+ data_var2    = mean(var(data'));
+ fprintf(1,'averaged input variance (with noise) = %f\n', data_var2);
 end
 
 % create target for training
 st  = cell(Kf,1);
-for i = 1:Kf, st{i,1}  = data_3(timet{i,1}(1:T)     ,1:Ns)'; end % training target
+for i = 1:Kf, st{i,1} = data(:,timet{i,1}(1:T)); end % training target
 
 % create inputs for training and test
-s   = data_3(time{1,1}(1:T)     ,1:Ns)';                         % training input data
-s2  = data_3(time{1,1}(T+1:T+T2),1:Ns)';                         % test input data
+s   = data(:,time{1,1}(1:T)     );                   % training input data
+s2  = data(:,time{1,1}(T+1:T+T2));                   % test input data
 
 %--------------------------------------------------------------------------------
 
@@ -130,8 +127,8 @@ fprintf(1,'create basis functions (time = %.1f min) ', toc/60);
 s_  = zeros(Ns*Kp,T);
 s2_ = zeros(Ns*Kp,T2);
 for k = 1:Kp
- s_(Ns*(k-1)+1:Ns*k,:)  = data_3(time{k,1}(1:T)     ,1:Ns)';
- s2_(Ns*(k-1)+1:Ns*k,:) = data_3(time{k,1}(T+1:T+T2),1:Ns)';
+ s_(Ns*(k-1)+1:Ns*k,:)  = data(:,time{k,1}(1:T)     );
+ s2_(Ns*(k-1)+1:Ns*k,:) = data(:,time{k,1}(T+1:T+T2));
  fprintf(1,'.');
 end
 fprintf(1,'\n');
@@ -227,8 +224,8 @@ Gain    = qA' * qSigmao^(-1);
 so1_    = zeros(Nu*Kp2,T1);
 so2_    = zeros(Nu*Kp2,T2);
 for k = 1:Kp2
- so1_(Nu*(k-1)+1:Nu*k,:) = Gain * data_3(time2{k,1}(1:T1)    ,1:Ns)'; % optimal bases
- so2_(Nu*(k-1)+1:Nu*k,:) = Gain * data_3(time2{k,1}(T+1:T+T2),1:Ns)'; % optimal bases
+ so1_(Nu*(k-1)+1:Nu*k,:) = Gain * data(:,time2{k,1}(1:T1)    ); % optimal bases
+ so2_(Nu*(k-1)+1:Nu*k,:) = Gain * data(:,time2{k,1}(T+1:T+T2)); % optimal bases
 end
 
 %--------------------------------------------------------------------------------
@@ -301,47 +298,141 @@ for k = 1:Kf
 end
 
 %--------------------------------------------------------------------------------
-% calculate theortical values
-
-tr_Sigmas = trace(qSigmas_opt);
-for i = 1:Ns
- Wi           = Copt(:,1:i)'; % mapping
- tr_WSigmasWT = trace(Wi*qSigmas_opt*Wi');
- for k = 1:Kf
-  tr_WSigmaseWT = trace(Wi*qSigmase_opt{k,1}*Wi');
-  entropy       = Kp*Ns * (tr_WSigmasWT - tr_WSigmaseWT);
-  entropy2      = Kp*Nu * (tr_WSigmasWT - tr_WSigmaseWT);
-  for h = 1:NT
-   T1 = T * h / NT;
-   err_s1.th(k,i,h)  = tr_Sigmas - tr_WSigmaseWT + entropy  / T1; % theory
-   err_s1.tho(k,i,h) = tr_Sigmas - tr_WSigmaseWT + entropy2 / T1; % theory
-  end
- end
-end
-
-%--------------------------------------------------------------------------------
-% plot test prediction error
+% plot test prediction error (for Fig 3e)
 
 fig        = figure();
 norm_s2    = mean(sum(st2{1,1}.^2));
 err_s1.em  = err_s1.em  / norm_s2;
-err_s1.th  = err_s1.th  / norm_s2;
 err_s1.emo = err_s1.emo / norm_s2;
-err_s1.tho = err_s1.tho / norm_s2;
 for k = 1:Kf
  subplot(3,2,k)
- plot(1:NT, reshape(err_s1.tho(k,Nu,:),[NT,1]), '-r', 1:NT, reshape(err_s1.emo(k,Nu,:),[NT,1]), '+r'), hold on
- plot(1:NT, reshape(err_s1.th(k,Nu,:), [NT,1]), '-b', 1:NT, reshape(err_s1.em(k,Nu,:), [NT,1]), '+b')
- plot(1:NT, reshape(err_s1.th(k,Ns,:), [NT,1]), '-g', 1:NT, reshape(err_s1.em(k,Ns,:), [NT,1]), '+g'), hold off
- axis([1 NT 0.0 1.0]), title(['test error (', num2str(k * 30), ' deg rot)'])
+ plot((2:NT)*(800/NT), reshape(err_s1.emo(k,Nu,2:NT),[NT-1,1]), '-b'), hold on
+ plot((2:NT)*(800/NT), reshape(err_s1.em(k,Ns,2:NT), [NT-1,1]), '--b'), hold off
+ axis([2*(800/NT) NT*(800/NT) 0.0 1.2]), title(['test error (', num2str(k * 30), ' deg rot)'])
 end
 drawnow
 set(fig, 'PaperPosition', [0,2,20,26])
 print(fig, 'predpca_test_err.pdf', '-dpdf');
 output_data = [];
 for k = 1:Kf
- output_data = [output_data, [1:3; reshape(err_s1.emo(k,Nu,:),[NT,1]), reshape(err_s1.em(k,Nu,:),[NT,1]), reshape(err_s1.em(k,Ns,:),[NT,1])]];
+ output_data = [output_data, [1:2; reshape(err_s1.emo(k,Nu,:),[NT,1]), reshape(err_s1.em(k,Ns,:),[NT,1])]];
 end
 csvwrite('predpca_test_err.csv',output_data)
 
+%--------------------------------------------------------------------------------
+% true and predicted images (for Fig 3a and Supplementary movies)
+
+fprintf(1,'true and predicted images (time = %.1f min)\n', toc/60);
+fprintf(1,'create supplementary movie\n', toc/60);
+err_obj = zeros(200,1);
+var_obj = zeros(200,1);
+for t = 1:200
+ err_obj(t,1) = mean(sum((st2{3,1}(:,(1:72)+(t-1)*72) - Wppca2' * u2(:,(1:72)+(t-1)*72)).^2));
+ var_obj(t,1) = sum(var(st2{3,1}(:,(1:72)+(t-1)*72)'));
+end
+[~,idx]       = sort(err_obj./var_obj);
+vid           = VideoWriter('predpca_movie.mp4', 'MPEG-4');
+vid.FrameRate = 30;
+vid.Quality   = 100;
+open(vid);
+for rot = 1:72
+ if (rem(rot,6) == 0), fprintf(1,'rot = %d deg\n', rot * 5), end
+ s_list(:,1:2:400) = st2{3,1}(:,rot+(idx-1)*72);
+ s_list(:,2:2:400) = Wppca2' * u2(:,rot+(idx-1)*72);
+ img = state_to_image(s_list(:,1:200), PCA_C2, PCA_C1, mean1, 20, 10);
+ img_size = size(img);
+ img = imresize(img,img_size(1:2)/2);
+ img = min(img,1);
+ img = max(img,0);
+ writeVideo(vid,img);
+end
+clear img
+close(vid)
+fprintf(1,'----------------------------------------\n\n');
+
+%--------------------------------------------------------------------------------
+%--------------------------------------------------------------------------------
+% hidden state analysis
+
+%--------------------------------------------------------------------------------
+% ICA of mean encoders (for Fig 3b)
+
+fprintf(1,'ICA of mean encoders (time = %.1f min)\n', toc/60);
+Nv      = 20;
+ica_rep = 8000;
+Wica    = diag(std(u1_(1:Nv,:)'))^(-1);
+for t = 1:ica_rep
+ if (rem(t,500) == 0), fprintf(1,'t = %d\n', t), end
+ if (t < 2000),     eta = 0.02;
+ elseif (t < 4000), eta = 0.01;
+ else               eta = 0.005; end
+ t_list = randi([1,T],T/10,1);
+ v1     = Wica * u1_(1:Nv,t_list);
+ g1     = tanh(100 * v1);
+ Wica   = Wica + eta * (eye(Nv) - g1*v1'/(T/10)) * Wica;
+end
+
+v1      = Wica * u1_(1:Nv,:);
+[~,idx] = sort(kurtosis(v1'),'descend');
+Omega   = zeros(Nv,Nv);
+Omega(Nv*(idx-1)+(1:Nv)) = 1;
+Wica    = Omega * diag(sign(skewness(v1'))) * Wica;
+v1      = Wica * u1_(1:Nv,:);
+v2      = Wica * u2_(1:Nv,:);
+
+% images corresponding to independent components
+img = state_to_image(Wppca2(1:Nv,:)'*Wica^(-1)*20, PCA_C2, PCA_C1, mean1, ceil(Nv/3), 3);
+imwrite(img, 'predpca_ica.png')
+if (WithNoise == 1 && seed == 0)
+ diff_order = [1,2,3,5,4,6,10,7,12,9,8,11,13,14,15,16,19,18,17,20];
+ Diff_Order = zeros(20,20);
+ Diff_Order(diff_order + 20*(0:19)) = 1;
+ Diff_Sign = eye(20,20);
+ Diff_Sign(4,4) = -1;
+ Diff_Sign(18,18) = -1;
+ 
+ img = state_to_image(Wppca2(1:Nv,:)'*Wica^(-1)*Diff_Order*Diff_Sign*20, PCA_C2, PCA_C1, mean1, ceil(Nv/3), 3);
+ imwrite(img, 'predpca_ica_permute_signflip.png')
+end
+fprintf(1,'----------------------------------------\n\n');
+
+%--------------------------------------------------------------------------------
+% PCA of deviation encoders (for Fig 3c)
+
+fprintf(1,'PCA of deviation encoders (time = %.1f min)\n', toc/60);
+[C,~,~] = pca(du1{3,1}');
+pc1     = C(:,1)'*du1{3,1};
+pc1     = pc1 / std(pc1);
+fig     = figure();
+plot(reshape(pc1,[72 T1/72]),'c-'), hold on
+plot([1 72],[0 0],'k--','LineWidth',3)
+plot(quantile(reshape(pc1,[72 T1/72])',0.2),'k-','LineWidth',3)
+plot(quantile(reshape(pc1,[72 T1/72])',0.5),'k-','LineWidth',3)
+plot(quantile(reshape(pc1,[72 T1/72])',0.8),'k-','LineWidth',3), hold off
+axis([1 72 -2 2])
+drawnow
+
+output_data = [1:T1/72; reshape(pc1,[72 T1/72])];
+csvwrite('predpca_pc1_of_deviation.csv',output_data)
+
+%--------------------------------------------------------------------------------
+% optimal encoding dimensionality (for Fig 3d)
+
+fprintf(1,'optimal encoding dimensionality (time = %.1f min)\n', toc/60);
+err_mean  = zeros(Ns,NT);
+err_mean2 = zeros(Ns,NT);
+for k = 1:Kf
+ err_mean  = err_mean  + reshape(err_s1.em(k,:,:), [Ns NT]) / Kf;
+ err_mean2 = err_mean2 + reshape(err_s1.emo(k,:,:),[Ns NT]) / Kf;
+end
+[~,idx] = min(err_mean);
+fig     = figure();
+plot(idx)
+drawnow
+
+output_data = [1:NT; idx];
+csvwrite('predpca_opt_encode_dim.csv',output_data)
+fprintf(1,'----------------------------------------\n\n');
+
+%--------------------------------------------------------------------------------
 %--------------------------------------------------------------------------------
