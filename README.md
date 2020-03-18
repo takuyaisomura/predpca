@@ -68,6 +68,10 @@ Run 'fig2a.m', 'fig2b.m', and 'fig2c.m'.
 
 Each script should take less than 5 minutes. Examples of their outcomes are stored in 'fig2/output'.
 
+<br>
+
+In order to evaluate the performance of autoencoder, please download the scripts from http://www.cs.toronto.edu/~hinton/MatlabForSciencePaper.html and train weight matrices with digit images involving monochrome inversion. Put an output file 'mnist_weights.mat' in the same directory before running 'fig2b.m'.
+
 ### fig3
 Download all scripts under the 'fig3' directory and put them in the same directory.
 
