@@ -159,11 +159,11 @@ subplot(1,6,6), image(reshape(output(:,90001:90010),[28 28*10])'*200)
 
 % save prediction results
 if (sequence_type == 1)
- fid = fopen('output_according_1_1000.dat','w');
+ fid = fopen('output_ascending_1_1000.dat','w');
  fwrite(fid, output(:,1:1000) * 255 * 1.2, 'uint8');
  fclose(fid);
  
- fid = fopen('output_according_100001_101000.dat','w');
+ fid = fopen('output_ascending_100001_101000.dat','w');
  fwrite(fid, output(:,100001:101000) * 255 * 1.2, 'uint8');
  fclose(fid);
 elseif (sequence_type == 2)
