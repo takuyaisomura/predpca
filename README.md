@@ -28,13 +28,16 @@ Copyright (C) 2020 Takuya Isomura
 
 ## System Requirements
 This package requires only a standard computer with enough RAM to support the in-memory operations.
+
 Software: MATLAB
+
 RAM: 16+ GB for Figs 2,3 / 128+ GB for Fig 4
 
 <br>
 
 The package has been tested on the following system:
-iMac Pro
+
+iMac Pro (macOS Mojave)
 
 ## Instruction
 ### For Fig 2
