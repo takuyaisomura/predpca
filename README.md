@@ -96,7 +96,7 @@ Before run this script, please download BDD100K dataset from https://bdd-data.be
 
 'predpca_bdd100k_test.m' predicts 0.5 second future of test data.
 
-Preprocessing would take 10+ hours.
+The preprocessing should take 10+ hours.
 
 
 ## License
