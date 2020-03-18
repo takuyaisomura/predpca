@@ -75,15 +75,13 @@ Download all scripts under the 'fig3' directory and put them in the same directo
 ### fig4
 Download all scripts under the 'fig4' directory and put them in the same directory.
 
-Before run this script, please download BDD100K dataset from https://bdd-data.berkeley.edu
+Before run this script, please download BDD100K dataset from https://bdd-data.berkeley.edu, downsample the videos to 320 x 180 and put them in the same directory.
 
-and downsample videos to 320 x 180 and put them in the same directory
+'predpca_bdd100k_preprocess.m' generates compressed input data fed to PredPCA.
 
-'predpca_bdd100k_preprocess.m' generates compressed input data fed to PredPCA
+'predpca_bdd100k_training.m' runs PredPCA to learn the optimal weight matrices.
 
-'predpca_bdd100k_training.m' learns the optimal weight matrices
-
-'predpca_bdd100k_test.m' predicts 0.5 second future of test data
+'predpca_bdd100k_test.m' predicts 0.5 second future of test data.
 
 Preprocessing would take about 10 hours.
 
