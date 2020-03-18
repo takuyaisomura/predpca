@@ -48,8 +48,25 @@ MATLAB R2019b
 The runtimes below are generated using this setup.
 
 
-## Instruction
+## Demos
 ### For Fig 2
+Before run this script, please download MNIST dataset from http://yann.lecun.com/exdb/mnist/ and expand
+
+train-images-idx3-ubyte
+
+train-labels-idx1-ubyte
+
+t10k-images-idx3-ubyte
+
+t10k-labels-idx1-ubyte
+
+in the same directory.
+
+Download all scripts under the 'fig2' directory and put them in the same directory.
+
+Run 'fig2a.m', 'fig2b.m', and 'fig2c.m'.
+
+Each script should take less than 5 minutes.
 
 ### For Fig 3
 
