@@ -1,4 +1,6 @@
 # Predictive principal component analysis (PredPCA)
+
+# Overview
 MATLAB scripts for predictive principal component analysis (PredPCA)
 
 <br>
@@ -20,3 +22,6 @@ Copyright (C) 2020 Takuya Isomura
 <br>
 
 2020-3-5
+
+# License
+This project is covered under the **GNU General Public License v3.0**.
