@@ -50,6 +50,8 @@ The runtimes below are generated using this setup.
 
 ## Demos
 ### fig2
+Download all scripts under the 'fig2' directory and put them in the same directory.
+
 Before run this script, please download MNIST dataset from http://yann.lecun.com/exdb/mnist/ and expand
 
 train-images-idx3-ubyte
@@ -62,15 +64,28 @@ t10k-labels-idx1-ubyte
 
 in the same directory.
 
-Download all scripts under the 'fig2' directory and put them in the same directory.
-
 Run 'fig2a.m', 'fig2b.m', and 'fig2c.m'.
 
 Each script should take less than 5 minutes. Examples of their outcomes are stored in fig2/output.
 
 ### fig3
+Download all scripts under the 'fig3' directory and put them in the same directory.
+
 
 ### fig4
+Download all scripts under the 'fig4' directory and put them in the same directory.
+
+Before run this script, please download BDD100K dataset from https://bdd-data.berkeley.edu
+
+and downsample videos to 320 x 180 and put them in the same directory
+
+'predpca_bdd100k_preprocess.m' generates compressed input data fed to PredPCA
+
+'predpca_bdd100k_training.m' learns the optimal weight matrices
+
+'predpca_bdd100k_test.m' predicts 0.5 second future of test data
+
+Preprocessing would take about 10 hours.
 
 
 ## License
