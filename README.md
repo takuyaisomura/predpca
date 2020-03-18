@@ -39,6 +39,15 @@ The package has been tested on the following system:
 
 iMac Pro (macOS Mojave)
 
+CPU: 2.3GHz 18 core Intel Xeon W
+
+RAM: 128 GB
+
+MATLAB R2019b
+
+The runtimes below are generated using this setup.
+
+
 ## Instruction
 ### For Fig 2
 
