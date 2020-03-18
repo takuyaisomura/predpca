@@ -79,7 +79,7 @@ Before run this script, please download ALOI dataset from http://aloi.science.uv
 
 Reference for ALOI dataset: Geusebroek JM, Burghouts GJ, Smeulders AWM, The Amsterdam library of object images, Int J Comput Vision, 61, 103-112 (2005)
 
-Run 'predpca_aloi_preprocess.m' and put the output file aloi_data.mat in the same directory.
+Run 'predpca_aloi_preprocess.m' and put the output file 'aloi_data.mat' in the same directory.
 
 Run 'predpca_aloi_main.m' to perform PredPCA and optain the outcomes.
 
