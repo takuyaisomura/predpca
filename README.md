@@ -23,7 +23,7 @@ Copyright (C) 2020 Takuya Isomura
 
 <br>
 
-2020-3-18
+2020-12-18
 
 
 ## System Requirements
