@@ -86,6 +86,8 @@ Before run this script, please download BDD100K dataset from https://bdd-data.be
 
 'predpca_bdd100k_test.m' predicts 0.5 second future of test data.
 
+'predpca_bdd_cat.m' and 'predpca_bdd_dyn.m' extract categorical and dynamical features, respectively.
+
 The preprocessing should take 10+ hours.
 
 
