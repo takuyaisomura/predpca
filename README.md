@@ -73,7 +73,7 @@ Run 'predpca_aloi_preprocess.m' and put the output file 'aloi_data.mat' in the s
 
 Run 'fig3_predpca.m' to perform PredPCA and optain the outcomes.
 
-Each script should take approximately 10 minutes. Examples of the outcomes are stored in 'fig3/output'.
+'predpca_aloi_preprocess.m' should take approximately 10 minutes. 'fig3_predpca.m' should take approximately 30 minutes. Examples of the outcomes are stored in 'fig3/output'.
 
 ### fig4
 Download all scripts under the 'fig4' directory and put them in the same directory.
