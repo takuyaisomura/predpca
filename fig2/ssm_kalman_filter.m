@@ -7,20 +7,20 @@
 % Copyright (C) 2020 Takuya Isomura
 % (RIKEN Center for Brain Science)
 %
-% 2020-3-5
+% 2020-5-30
 
 %--------------------------------------------------------------------------------
 
-function [qxp1,qxp2,qA,qB] = ssm_kalman_filter(s, s2, A, B, Sigmao, Sigmaz, maxrep, eta, prior_x)
+function [qxp1,qxc1,qxp2,qxc2,qA,qB] = ssm_kalman_filter(s, s2, Ainit, Binit, Sigmao, Sigmaz, maxrep, eta, prior_x)
 
 T      = length(s(1,:));
 T1     = T / 10;
-Ns     = length(A(:,1));
-Nx     = length(A(1,:));
+Ns     = length(Ainit(:,1));
+Nx     = length(Ainit(1,:));
 
 % initialization
-qA     = randn(Ns,Nx) * sqrt(trace(A'*A)/Ns/Nx);
-qB     = randn(Nx,Nx) * sqrt(trace(B'*B)/Nx/Nx);
+qA     = Ainit;
+qB     = Binit;
 qAold  = qA;
 qBold  = qB;
 

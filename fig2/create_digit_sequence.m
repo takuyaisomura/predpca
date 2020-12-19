@@ -7,11 +7,11 @@
 % Copyright (C) 2020 Takuya Isomura
 % (RIKEN Center for Brain Science)
 %
-% 2020-3-5
+% 2020-5-30
 
 %--------------------------------------------------------------------------------
 
-function [input,input2,input3,label,label2,label3] = create_digit_sequence(dir,sequence_type,T,T2,T3,test_randomness,sign_flip)
+function [input,input2,input3,label,label2,label3] = create_digit_sequence(dir,sequence_type,T,T2,T3,train_randomness,test_randomness,train_signflip,test_signflip)
 
 fprintf(1,'read files\n');
 M        = 60000;
@@ -52,9 +52,13 @@ if (sequence_type == 1)
   input(:,t) = pm * data(:,lab{count+1,1}(1,rnd));
   label(:,t) = label_d(:,lab{count+1,1}(1,rnd));
   count = rem(count+1,10);
-  if (randi([1 50]) == 1)
-   count = randi([0 9]);
-   if (sign_flip == 1), pm = -pm; end
+  if (train_randomness == 1)
+   if (randi([1 50]) == 1)
+    count = randi([0 9]);
+    if (train_signflip == 1), pm = -pm; end
+   end
+  else
+   if ((train_signflip == 1) && (randi([1 50]) == 1)), pm = -pm; end
   end
  end
  count = 0; pm = 1;
@@ -66,8 +70,10 @@ if (sequence_type == 1)
   if (test_randomness == 1)
    if (randi([1 50]) == 1)
     count = randi([0 9]);
-    if (sign_flip == 1), pm = -pm; end
+    if (test_signflip == 1), pm = -pm; end
    end
+  else
+   if ((test_signflip == 1) && (randi([1 50]) == 1)), pm = -pm; end
   end
  end
  count = 0; pm = 1;
@@ -76,9 +82,13 @@ if (sequence_type == 1)
   input3(:,t) = pm * data(:,lab{count+1,1}(1,rnd));
   label3(:,t) = label_d(:,lab{count+1,1}(1,rnd));
   count = rem(count+1,10);
-  if (randi([1 50]) == 1)
-   count = randi([0 9]);
-   if (sign_flip == 1), pm = -pm; end
+  if (train_randomness == 1)
+   if (randi([1 50]) == 1)
+    count = randi([0 9]);
+    if (train_signflip == 1), pm = -pm; end
+   end
+  else
+   if ((train_signflip == 1) && (randi([1 50]) == 1)), pm = -pm; end
   end
  end
 end
@@ -92,9 +102,13 @@ if (sequence_type == 2)
   count3 = rem(count + count2, 10);
   count  = count2;
   count2 = count3;
-  if (randi([1 200]) == 1)
-   count2 = randi([0 9]);
-   if (sign_flip == 1), pm = -pm; end
+  if (train_randomness == 1)
+   if (randi([1 200]) == 1)
+    count2 = randi([0 9]);
+    if (train_signflip == 1), pm = -pm; end
+   end
+  else
+   if ((train_signflip == 1) && (randi([1 200]) == 1)), pm = -pm; end
   end
  end
  count = 0; count2 = 1; pm = 1;
@@ -108,8 +122,10 @@ if (sequence_type == 2)
   if (test_randomness == 1)
    if (randi([1 200]) == 1)
     count2 = randi([0 9]);
-    if (sign_flip == 1), pm = -pm; end
+    if (test_signflip == 1), pm = -pm; end
    end
+  else
+   if ((test_signflip == 1) && (randi([1 200]) == 1)), pm = -pm; end
   end
  end
  count = 0; count2 = 1; pm = 1;
@@ -120,9 +136,13 @@ if (sequence_type == 2)
   count3 = rem(count + count2, 10);
   count  = count2;
   count2 = count3;
-  if (randi([1 200]) == 1)
-   count2 = randi([0 9]);
-   if (sign_flip == 1), pm = -pm; end
+  if (train_randomness == 1)
+   if (randi([1 200]) == 1)
+    count2 = randi([0 9]);
+    if (train_signflip == 1), pm = -pm; end
+   end
+  else
+   if ((train_signflip == 1) && (randi([1 200]) == 1)), pm = -pm; end
   end
  end
 end

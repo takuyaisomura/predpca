@@ -7,22 +7,22 @@
 % Copyright (C) 2020 Takuya Isomura
 % (RIKEN Center for Brain Science)
 %
-% 2020-3-5
+% 2020-6-2
 
 %--------------------------------------------------------------------------------
 
-function [s_,s2_,se,se2,Q] = maximum_likelihood_estimator(s,s2,Kp,prior_s_)
+function [s_,s2_,se,se2,Q] = maximum_likelihood_estimator(s,s2,st,Kp,prior_s_)
 
 T   = length(s(1,:));
 T2  = length(s2(1,:));
 Ns  = length(s(:,1));
 
-s_  = s(:,[T,1:T-1]);    % basis functions (training)
-for k = 1:Kp-1, s_ = [s(:,[T,1:T-1]); s_(:,[T,1:T-1])]; end
-s2_ = s2(:,[T2,1:T2-1]); % basis functions (test)
-for k = 1:Kp-1, s2_ = [s2(:,[T2,1:T2-1]); s2_(:,[T2,1:T2-1])]; end
+s_  = zeros(Ns*Kp,T);    % basis functions (training)
+s2_ = zeros(Ns*Kp,T2);   % basis functions (test)
+for k = 1:Kp, s_(Ns*(k-1)+(1:Ns),:) = s(:,[T-(k-1):T,1:T-k]); end
+for k = 1:Kp, s2_(Ns*(k-1)+(1:Ns),:) = s2(:,[T2-(k-1):T2,1:T2-k]); end
 
-Q   = (s*s_') * (s_*s_'+eye(Ns*Kp)*prior_s_)^(-1);
+Q   = (st*s_') * (s_*s_'+eye(Ns*Kp)*prior_s_)^(-1);
 se  = Q * s_;            % predicted input (training)
 se2 = Q * s2_;           % predicted input (test)
 
