@@ -1,5 +1,7 @@
 # Predictive principal component analysis (PredPCA)
 
+[![DOI](https://zenodo.org/badge/245048386.svg)](https://zenodo.org/badge/latestdoi/245048386)
+
 ## Overview
 Predictive principal component analysis (PredPCA) is an analytically solvable unsupervised learning scheme that extracts the most informative components for predicting future inputs. It is a convex optimization and can find the analytical expressions of optimal weight matrices and encoding dimensionality that provide the global minimum of the squared test prediction error.
 
