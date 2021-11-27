@@ -15,7 +15,9 @@ This is a supplementary material of
 
 Takuya Isomura, Taro Toyoizumi
 
-Preprint at https://arxiv.org/abs/2003.00470
+Nature Machine Intelligence 3, 434–446 (2021). https://doi.org/10.1038/s42256-021-00306-1
+
+Preprint version is available at https://arxiv.org/abs/2003.00470
 
 <br>
 
